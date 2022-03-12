@@ -1,78 +1,43 @@
 package main
 
 import (
-	Bar "EmoScan/bar"
-	Run "EmoScan/run"
-	"bufio"
+	Check "EmoScan/GetCheck"
+	Run "EmoScan/Run"
 	"flag"
 	"fmt"
 	"os"
-	"sync"
-	"time"
 )
-
-var URL = flag.String("url", "", "输入url")
-var Urllist = flag.String("urls", "", "输入urls的文件名")
-var wg sync.WaitGroup
 
 func main() {
 
 	Banner()
 	flag.Parse()
 
-	var bar Bar.Bar
-	if *URL != "" {
-
-		bar.NewOption(0, 100)
-		//bar.NewOptionWithGraph(0, 100, "#")
-		for i := 0; i <= 100; i++ {
-			time.Sleep(100 * time.Millisecond)
-			bar.Play(int64(i))
-		}
-		bar.Finish()
-
-		Run.Run(*URL)
-
+	if *Check.URL != "" {
+		fmt.Println("扫描中")
+		Check.Wg.Add(1)
+		data := Check.Get_req(*Check.URL)
+		Run.Run(*Check.URL, data.Bodys, data.Header, data.Server)
 	}
 
-	if *Urllist != "" {
-
-		bar.NewOption(0, 100)
-		//bar.NewOptionWithGraph(0, 100, "#")
-		for i := 0; i <= 100; i++ {
-			time.Sleep(100 * time.Millisecond)
-			bar.Play(int64(i))
-		}
-		bar.Finish()
-
-		file, err := os.Open(*Urllist)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		defer file.Close()
-		scanner := bufio.NewScanner(file)
-		scanner.Split(bufio.ScanLines)
-		var lines []string
-		for scanner.Scan() {
-			lines = append(lines, scanner.Text())
-		}
-
-		wg.Add(3)
-
+	if *Check.Urllist != "" {
+		fmt.Println("扫描中")
+		lines := Check.Get_urllist()
 		for _, line := range lines {
-
-			go Run.Run(line)
-
+			Check.Wg.Add(1)
+			data := Check.Get_req(line)
+			go Run.Run(line, data.Bodys, data.Header, data.Server)
 		}
 
 	}
-	if *URL == "" && *Urllist == "" {
-		fmt.Println("请使用-url 或 -urls 来指定目标")
+
+	if *Check.URL == "" && *Check.Urllist == "" {
+		fmt.Println("请使用-url 或 -file 来指定目标")
 		os.Exit(0)
 	}
-	wg.Wait()
-	fmt.Println("Done")
+	Check.Wg.Wait()
+
+	fmt.Println("done")
 }
 
 func Banner() {
@@ -83,7 +48,7 @@ func Banner() {
   /        / /  )  /   )     \      /         /   |   /  | /
 _/____    / /  /  (___/  (____/    (____/    /    |  /   |/___
 
-		                       by Ch1nfo ver:0.2
+		                       by Ch1nfo ver:0.3
 	`
 	print(banner)
 }
