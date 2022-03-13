@@ -14,7 +14,7 @@
 
 多个url：go run EmoScan.go -file filename.txt 或 EmoScan.exe -file filename.txt
 
-.txt文件请放入放入EmoScan.go/EmoScan.exe 目录内
+.txt文件请放入放入运行目录内
 默认输出至控制台，若想保存至文件，请增加输入-f T
 使用exe时，文件保存位置为运行目录
 
