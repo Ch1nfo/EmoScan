@@ -48,7 +48,7 @@ func Banner() {
   /        / /  )  /   )     \      /         /   |   /  | /
 _/____    / /  /  (___/  (____/    (____/    /    |  /   |/___
 
-		                       by Ch1nfo ver:0.3
+		                       by Ch1nfo ver:0.35
 	`
 	print(banner)
 }
