@@ -5,7 +5,11 @@ import (
 	Read "EmoScan/Read"
 	"EmoScan/assets"
 	Write "EmoScan/write"
+	"flag"
+	"fmt"
 )
+
+var FILE = flag.String("f", "", "save to file")
 
 func Run(url string, Bodys string, Headers string, Servers string) {
 
@@ -22,13 +26,23 @@ func Run(url string, Bodys string, Headers string, Servers string) {
 				}
 				if !(ContainsInSlice(arr, false)) {
 					if ContainsInSlice(arr, true) {
-						Write.Resulte_write(url, configObj.Product)
+						if *FILE != "" {
+							Write.Resulte_write(url, configObj.Product)
+						} else {
+							fmt.Println(url, configObj.Product)
+						}
+
 					}
 				}
 
 			} else {
 				if Check.Check_model(configObj.Rules[i][0].Match, configObj.Rules[i][0].Content, url, Bodys, Headers, Servers) {
-					Write.Resulte_write(url, configObj.Product)
+					if *FILE != "" {
+						Write.Resulte_write(url, configObj.Product)
+					} else {
+						fmt.Println(url, configObj.Product)
+					}
+
 				}
 			}
 		}
