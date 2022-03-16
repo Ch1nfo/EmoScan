@@ -8,6 +8,8 @@
 
 0.35更新：新增输出选项
 
+1.0更新：优化了项目结构，压缩了josn文件大小
+
 # Example
 
 单个url：go run EmoScan.go -url http://127.0.0.1 或 EmoScan.exe -url http://127.0.0.1
