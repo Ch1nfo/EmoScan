@@ -12,9 +12,9 @@
 
 # Example
 
-单个url：go run EmoScan.go -url http://127.0.0.1 或 EmoScan.exe -url http://127.0.0.1
+单个url：go run main.go -url http://127.0.0.1 或 cmd.exe -url http://127.0.0.1
 
-多个url：go run EmoScan.go -file filename.txt 或 EmoScan.exe -file filename.txt
+多个url：go run main.go -file filename.txt 或 cmd.exe -file filename.txt
 
 .txt文件请放入放入运行目录内
 默认输出至控制台，若想保存至文件，请增加输入-f T
